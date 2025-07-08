@@ -91,6 +91,7 @@ class Agent(object):
         rewards_scontate = discount_rewards(rewards, self.gamma) # calcolo reward scontate
         
         baseline = 20
+        #baseline=0 per il reinforce no baseline
         rewards_scontate = rewards_scontate - baseline
         
         
