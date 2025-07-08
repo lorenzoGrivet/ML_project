@@ -21,24 +21,15 @@ class Policy(torch.nn.Module):
         self.hidden = 64
         self.tanh = torch.nn.Tanh()
 
-        """
-            Actor network
-        """
+
         self.fc1_actor = torch.nn.Linear(state_space, self.hidden)
         self.fc2_actor = torch.nn.Linear(self.hidden, self.hidden)
         self.fc3_actor_mean = torch.nn.Linear(self.hidden, action_space)
         
-        # Learned standard deviation for exploration at training time 
+        #Learned standard deviation for exploration at training time 
         self.sigma_activation = F.softplus
         self.init_sigma = 0.5
         self.sigma = torch.nn.Parameter(torch.zeros(self.action_space)+self.init_sigma)
-
-
-        """
-            Critic network
-        """
-        # TASK 3: critic network for actor-critic algorithm
-
 
         self.init_weights()
 
