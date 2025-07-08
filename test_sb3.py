@@ -8,16 +8,17 @@ import wandb
 import numpy as np
 from stable_baselines3 import PPO
 from stable_baselines3.common.evaluation import evaluate_policy
+
 from env.custom_hopper import *
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--episodes', type=int, default=200, help='Number of test episodes')
+    parser.add_argument('--episodes', type=int, default=100, help='Number of test episodes')
     parser.add_argument('--render', default=False, action='store_true', help='Render the simulator')
     parser.add_argument('--device', type=str, default='cpu', help='Device to run the model on [cpu, cuda]')
     parser.add_argument('--name', type=str, default='sb3-test', help='Name of the test run')
-    parser.add_argument("--mod_test", default="source",type=str,help='Test mode' )
-    parser.add_argument("--mod_train", required=True,type=str, help='Train mode')
+    parser.add_argument("--mod_test", default="source",type=str)
+    parser.add_argument("--mod_train", required=True,type=str)
 
 
     return parser.parse_args()
@@ -26,7 +27,6 @@ def main():
     args = parse_args()
     mod_test=args.mod_test
 
-    # Output file
     os.makedirs(args.name, exist_ok=True)
     out_file_path = os.path.join(args.name, f"output_train_{args.mod_train}_test_{mod_test}.txt")
     out_file = open(out_file_path, "w")
@@ -38,12 +38,11 @@ def main():
     print("Dynamics parameters:", env.get_parameters())
     
     
-    out_file.write(f"Model tested with {mod_test}\n")
+    out_file.write(f"Model testato con {mod_test}\n")
 
     out_file.write(f"Action space: {env.action_space}\n")
     out_file.write(f"State space: {env.observation_space}\n")
     out_file.write(f"Dynamics parameters: {env.get_parameters()}\n")
-
 
     wandb.init(
         project="PPO",

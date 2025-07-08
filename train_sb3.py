@@ -19,9 +19,8 @@ def parse_args():
     parser.add_argument('--episodes', default=1_000_000, type=int, help='Number of training episodes')
     parser.add_argument('--render', default=False, type=bool)
     parser.add_argument('--device', default='cpu', type=str, help='network device [cpu, cuda]')
-    parser.add_argument('--name', default='hopper-train_noName', type=str, help='Scegliere nome')
+    parser.add_argument('--name', default='hopper-train_noName', type=str, help='Name of run')
     parser.add_argument("--mod_train", default="source",type=str)
-
 
     
     return parser.parse_args()
@@ -32,7 +31,8 @@ mod_train=args.mod_train
 mod_eval=mod_train
 
 def main():
-   
+
+    
     wandb.init(
         project="PPO",
         name=f"{args.name}_train_{mod_train}",
@@ -50,9 +50,12 @@ def main():
     config = wandb.config
     
 
+
     train_env = gym.make(f'CustomHopper-{mod_train}-v0')
     eval_env = gym.make(f'CustomHopper-{mod_eval}-v0')
 
+
+    
 
     print('State space:', train_env.observation_space)  # state-space
     print('Action space:', train_env.action_space)  # action-space
@@ -77,7 +80,7 @@ def main():
     # TASK 4 & 5: train and test policies on the Hopper env with stable-baselines3
     #
 
-
+    
     model = PPO(
         "MlpPolicy",
         train_env,
@@ -96,21 +99,21 @@ def main():
         render=args.render
         )
 
-    
     wandb_callback = WandbCallback(
         model_save_path=f"{args.name}/models/",
         verbose=2
     )
 
+
     callback = CallbackList([wandb_callback, eval_callback])
 
+    
     model.learn(
         total_timesteps=config.total_timesteps,
         callback=callback
     )
 
 
-    
     mean_reward, std_reward = evaluate_policy(
         model,
         eval_env,
@@ -121,6 +124,7 @@ def main():
     
     out_file.write(f"Final evaluation mean reward: {mean_reward:.2f} +/- {std_reward:.2f}")
     out_file.close()
+
 
     wandb.finish()
 
