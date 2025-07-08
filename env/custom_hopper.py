@@ -1,3 +1,4 @@
+
 """Implementation of the Hopper environment supporting
 domain randomization optimization.
     
@@ -33,9 +34,12 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
         # TASK 6: implement domain randomization. Remember to sample new dynamics parameter
         #         at the start of each training episode.
         
-        raise NotImplementedError()
+        #raise NotImplementedError()
+        masses = np.copy(self.original_masses)
+        random_parameters = np.random.uniform(low=0.7, high=1.3, size = len(masses)-1)
+        masses[1:] = masses[1:]*random_parameters
 
-        return
+        return masses
 
 
     def get_parameters(self):
@@ -84,6 +88,7 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
         qpos = self.init_qpos + self.np_random.uniform(low=-.005, high=.005, size=self.model.nq)
         qvel = self.init_qvel + self.np_random.uniform(low=-.005, high=.005, size=self.model.nv)
         self.set_state(qpos, qvel)
+        #self.set_random_parameters()    TO RUN UDR REMOVE THE COMMENT ON THIS LINE
         return self._get_obs()
 
 
@@ -128,20 +133,20 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
 gym.envs.register(
         id="CustomHopper-v0",
         entry_point="%s:CustomHopper" % __name__,
-        max_episode_steps=500,
+        max_episode_steps=1000,
 )
 
 gym.envs.register(
         id="CustomHopper-source-v0",
         entry_point="%s:CustomHopper" % __name__,
-        max_episode_steps=500,
+        max_episode_steps=1000,
         kwargs={"domain": "source"}
 )
 
 gym.envs.register(
         id="CustomHopper-target-v0",
         entry_point="%s:CustomHopper" % __name__,
-        max_episode_steps=500,
+        max_episode_steps=1000,
         kwargs={"domain": "target"}
 )
 
