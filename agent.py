@@ -30,8 +30,8 @@ class Policy(torch.nn.Module):
         
         # Learned standard deviation for exploration at training time 
         self.sigma_activation = F.softplus
-        init_sigma = 0.5
-        self.sigma = torch.nn.Parameter(torch.zeros(self.action_space)+init_sigma)
+        self.init_sigma = 0.5
+        self.sigma = torch.nn.Parameter(torch.zeros(self.action_space)+self.init_sigma)
 
 
         """
@@ -61,12 +61,6 @@ class Policy(torch.nn.Module):
         sigma = self.sigma_activation(self.sigma)
         normal_dist = Normal(action_mean, sigma)
 
-
-        """
-            Critic
-        """
-        # TASK 3: forward in the critic network
-
         
         return normal_dist
 
@@ -83,6 +77,9 @@ class Agent(object):
         self.action_log_probs = []
         self.rewards = []
         self.done = []
+        
+        self.episode_count = 0
+
 
 
     def update_policy(self):
@@ -98,17 +95,37 @@ class Agent(object):
         # TASK 2:
         #   - compute discounted returns
         #   - compute policy gradient loss function given actions and returns
-        #   - compute gradients and step the optimizer
-        #
+        #   - compute gradients and step the optimizer 
 
+        rewards_scontate = discount_rewards(rewards, self.gamma) # calcolo reward scontate
+        
+        baseline = 20
+        rewards_scontate = rewards_scontate - baseline
+        
+        
+        rewards_scontate_norm = (rewards_scontate-rewards_scontate.mean())/(rewards_scontate.std()+ 1e-8)
+        
+        policy_loss = -torch.sum(action_log_probs*rewards_scontate_norm)
 
-        #
-        # TASK 3:
-        #   - compute boostrapped discounted return estimates
-        #   - compute advantage terms
-        #   - compute actor loss and critic loss
-        #   - compute gradients and step the optimizer
-        #
+        self.policy_loss = policy_loss.item() #salvo il valore della loss per il log
+        
+        self.optimizer.zero_grad() #mette a 0 per ogni inizio ciclo
+        policy_loss.backward() #calcola automaticamente i gradienti
+        self.optimizer.step() 
+        #i gradienti sono la direzione, fare backward() significa scegliere in che direzione 
+        # del grafo dell'optimizer prendere.
+                
+        # Decay di sigma
+        decay_rate = 0.999976
+        min_sigma = 0.1
+
+        new_sigma = max(min_sigma, self.policy.init_sigma * (decay_rate ** self.episode_count))
+        
+        with torch.no_grad():
+            self.policy.sigma.copy_(torch.ones_like(self.policy.sigma) * new_sigma)
+            
+            
+        self.episode_count += 1
 
         return        
 
@@ -137,4 +154,3 @@ class Agent(object):
         self.action_log_probs.append(action_log_prob)
         self.rewards.append(torch.Tensor([reward]))
         self.done.append(done)
-
