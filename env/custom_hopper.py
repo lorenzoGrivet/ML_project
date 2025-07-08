@@ -88,7 +88,7 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
         qpos = self.init_qpos + self.np_random.uniform(low=-.005, high=.005, size=self.model.nq)
         qvel = self.init_qvel + self.np_random.uniform(low=-.005, high=.005, size=self.model.nv)
         self.set_state(qpos, qvel)
-        #self.set_random_parameters()    TO RUN UDR REMOVE THE COMMENT ON THIS LINE
+        #self.set_random_parameters()    #TO RUN UDR REMOVE THE COMMENT ON THIS LINE
         return self._get_obs()
 
 
