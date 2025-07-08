@@ -113,27 +113,17 @@ class ProximalPolicyDistillation(PolicyDistillationAlgorithm, PPO):
                     lambda_ = lambda_(self.num_timesteps)
                 epoch_distillation_lambda = lambda_
 
-                if hasattr(self, 'teacher_model') and self.teacher_model is not None and lambda_>0.0:
+                teacher_act_distribution = self.teacher_model.policy.get_distribution(rollout_data.observations)
+                student_act_distribution = self.policy.get_distribution(rollout_data.observations)
 
-                    teacher_act_distribution = self.teacher_model.policy.get_distribution(rollout_data.observations)
-                    student_act_distribution = self.policy.get_distribution(rollout_data.observations)
+                kl_divergence = distributions.kl_divergence(teacher_act_distribution, student_act_distribution)
+                
+                clipped_ratio = th.clamp(ratio, 1-clip_range, None)
+                distillation_loss = th.mean(clipped_ratio * kl_divergence)
 
-                    kl_divergence = distributions.kl_divergence(teacher_act_distribution, student_act_distribution)
+                loss = policy_loss + self.ent_coef * entropy_loss + self.vf_coef * value_loss + lambda_ * distillation_loss
 
-                    if isinstance(teacher_act_distribution,
-                                  (distributions.DiagGaussianDistribution,
-                                   distributions.StateDependentNoiseDistribution)):
-                        kl_divergence = distributions.sum_independent_dims(kl_divergence)
-
-                    
-                    clipped_ratio = th.clamp(ratio, 1-clip_range, None)
-                    distillation_loss = th.mean(clipped_ratio * kl_divergence)
-
-                    loss = policy_loss + self.ent_coef * entropy_loss + self.vf_coef * value_loss + lambda_ * distillation_loss
-
-                    distillation_losses.append(lambda_*distillation_loss.item())
-                else:
-                    loss = policy_loss + self.ent_coef * entropy_loss + self.vf_coef * value_loss
+                distillation_losses.append(lambda_*distillation_loss.item())
                 ################
 
 
