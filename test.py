@@ -13,7 +13,7 @@ def parse_args():
     parser.add_argument('--device', default='cpu', type=str, help='network device [cpu, cuda]')
     parser.add_argument('--render', default=False, action='store_true', help='Render the simulator')
     parser.add_argument('--episodes', default=100, type=int, help='Number of test episodes')
-    parser.add_argument('--name', default='hopper-test_noName', type=str, help='Scegliere nome')
+    parser.add_argument('--name', default='hopper-test_noName', type=str, help='Same as training run name')
     return parser.parse_args()
 
 args = parse_args()
