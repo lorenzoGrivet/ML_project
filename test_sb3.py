@@ -16,7 +16,7 @@ def parse_args():
     parser.add_argument('--episodes', type=int, default=100, help='Number of test episodes')
     parser.add_argument('--render', default=False, action='store_true', help='Render the simulator')
     parser.add_argument('--device', type=str, default='cpu', help='Device to run the model on [cpu, cuda]')
-    parser.add_argument('--name', type=str, default='sb3-test', help='Name of the test run')
+    parser.add_argument('--name', type=str, default='sb3-test', help='Same as the name of the training run')
     parser.add_argument("--mod_test", default="source",type=str)
     parser.add_argument("--mod_train", required=True,type=str)
 
@@ -45,7 +45,7 @@ def main():
     out_file.write(f"Dynamics parameters: {env.get_parameters()}\n")
 
     wandb.init(
-        project="PPO",
+        project="Confronti_progetti",
         name=f"{args.name}_train_{args.mod_train}_test_{mod_test}",
         entity="andrea-gaudino02-politecnico-di-torino",
         config={

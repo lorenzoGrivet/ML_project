@@ -34,7 +34,7 @@ def main():
 
     
     wandb.init(
-        project="PPO",
+        project="Confronti_progetti",
         name=f"{args.name}_train_{mod_train}",
         entity="andrea-gaudino02-politecnico-di-torino",
         config={
