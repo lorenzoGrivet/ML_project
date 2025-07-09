@@ -9,14 +9,14 @@ import gym
 from wandb.integration.sb3 import WandbCallback
 from stable_baselines3.common.callbacks import EvalCallback
 import wandb
-from environment.custom_hopper import *
+from env.custom_hopper import *
 import numpy as np
 
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--episodes', default=10_000_000, type=int, help='Number of training episodes')
     parser.add_argument('--render', default=False, type=bool)
-    parser.add_argument('--name', required=True, type=str, help='Scegliere nome')
+    parser.add_argument('--name', required=True, type=str, help='Choose a name for the run')
 
     return parser.parse_args()
 
@@ -26,7 +26,7 @@ seeds = [100, 200, 300, 400, 500]
 if __name__ == "__main__":
     for seed in seeds:
         wandb.init(
-            project="PPD_extension",
+            project="Confronti_progetti",
             name=f"{args.name}_train_teacher_seed{seed}",
             entity="andrea-gaudino02-politecnico-di-torino",
             config={

@@ -4,7 +4,7 @@ from stable_baselines3.common.vec_env.vec_frame_stack import VecFrameStack
 from stable_baselines3.common.evaluation import evaluate_policy
 import gym
 import torch
-from environment.custom_hopper import *
+from env.custom_hopper import *
 from collections import deque
 import wandb
 import argparse
@@ -13,18 +13,18 @@ from stable_baselines3.common.callbacks import EvalCallback
 import numpy as np
 
 try:
-    from sb3_distill import ProximalPolicyDistillation
+    from sb3_distill.ppd import ProximalPolicyDistillation
 except :
     import sys
     sys.path.append('../')
-    from sb3_distill import ProximalPolicyDistillation
+    from sb3_distill.ppd import ProximalPolicyDistillation
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--episodes', default=2_000_000, type=int, help='Number of distill episodes')
     parser.add_argument('--render', default=False, type=bool)
-    parser.add_argument('--name', required=True, type=str, help='Choose name same as train and test')
+    parser.add_argument('--name', required=True, type=str, help='Choose name same as teacher')
     parser.add_argument('--size', required=True, type=str, help='Choose size: small, same, large')
     return parser.parse_args()
 
@@ -50,7 +50,7 @@ if __name__ == "__main__":
     for seed in seeds:
     
         wandb.init(
-            project="PPD_extension",
+            project="Confronti_progetti",
             name=f"{args.name}_distill_{args.size}_seed{seed}",
             entity="andrea-gaudino02-politecnico-di-torino",
             config={

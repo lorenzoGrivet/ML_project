@@ -7,7 +7,7 @@ import gym
 import numpy as np
 from stable_baselines3 import PPO
 from stable_baselines3.common.evaluation import evaluate_policy
-from environment.custom_hopper import *
+from env.custom_hopper import *
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -44,7 +44,7 @@ def main(seed):
 
 
     wandb.init(
-        project="PPD_extension",
+        project="Confronti_progetti",
         name=nameRun,
         entity="andrea-gaudino02-politecnico-di-torino",
         config={

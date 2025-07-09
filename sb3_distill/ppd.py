@@ -113,17 +113,44 @@ class ProximalPolicyDistillation(PolicyDistillationAlgorithm, PPO):
                     lambda_ = lambda_(self.num_timesteps)
                 epoch_distillation_lambda = lambda_
 
-                teacher_act_distribution = self.teacher_model.policy.get_distribution(rollout_data.observations)
-                student_act_distribution = self.policy.get_distribution(rollout_data.observations)
+                if hasattr(self, 'teacher_model') and self.teacher_model is not None and lambda_>0.0:
+                    #print("ERROR: must first call model.set_teacher(teacher_model)")
+                    #return
 
-                kl_divergence = distributions.kl_divergence(teacher_act_distribution, student_act_distribution)
-                
-                clipped_ratio = th.clamp(ratio, 1-clip_range, None)
-                distillation_loss = th.mean(clipped_ratio * kl_divergence)
+                    teacher_act_distribution = self.teacher_model.policy.get_distribution(rollout_data.observations)
+                    student_act_distribution = self.policy.get_distribution(rollout_data.observations)
 
-                loss = policy_loss + self.ent_coef * entropy_loss + self.vf_coef * value_loss + lambda_ * distillation_loss
+                    kl_divergence = distributions.kl_divergence(teacher_act_distribution, student_act_distribution) # trying to replicate the teacher; mean-seeking
+                    #kl_divergence = distributions.kl_divergence(student_act_distribution, teacher_act_distribution) # trying to find the most probable action of the teacher; mode-seeking
 
-                distillation_losses.append(lambda_*distillation_loss.item())
+
+                    if isinstance(teacher_act_distribution,
+                                  (distributions.DiagGaussianDistribution,
+                                   distributions.StateDependentNoiseDistribution)):
+                        kl_divergence = distributions.sum_independent_dims(kl_divergence)
+
+                    ### unclipped version:
+                    #distillation_loss = th.mean(ratio * th.squeeze(kl_divergence))   # 'ratio' or 'th.clamp(ratio, 1 - clip_range, 1 + clip_range)'
+
+                    # clipped version: note that both ratio (clipped or unclipped) and KL are always >=0; thus, contrary to the clip on the ratio*advantage, we do not have problems with changing signs.   max(r*kl, clip_r*kl) = max(r, clip(r, 1-e, 1+e))*kl = max(r, 1-e)*kl
+                    #clipped_ratio = th.clamp(ratio, 1 - clip_range, 1 + clip_range)
+                    clipped_ratio = th.clamp(ratio, 1-clip_range, None)
+                    distillation_loss = th.mean(clipped_ratio * kl_divergence)   # 'ratio' or ''
+
+
+                    ## remove
+                    # clipped version: this is the most correct implementation, which prevents the policy from changing too much in between PPO iterations.
+                    # Note that the clip term is now max instead of min, and without negative sign; that is because we are now minimizing a loss (maximizing -KL).
+                    #distillation_loss_1 = th.squeeze(kl_divergence) * ratio
+                    #distillation_loss_2 = th.squeeze(kl_divergence) * th.clamp(ratio, 1 - clip_range, 1 + clip_range)
+                    #distillation_loss = th.max(distillation_loss_1, distillation_loss_2).mean()
+                    ## end remove
+
+                    loss = policy_loss + self.ent_coef * entropy_loss + self.vf_coef * value_loss + lambda_ * distillation_loss
+
+                    distillation_losses.append(lambda_*distillation_loss.item())
+                else:
+                    loss = policy_loss + self.ent_coef * entropy_loss + self.vf_coef * value_loss
                 ################
 
 
