@@ -16,25 +16,28 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--device', default='cpu', type=str, help='network device [cpu, cuda]')
     parser.add_argument('--render', default=False, action='store_true', help='Render the simulator')
-    parser.add_argument('--episodes', default=1000, type=int, help='Number of test episodes')
-    parser.add_argument('--name', required=True, type=str, help='Scegliere nome')
+    parser.add_argument('--episodes', default=200, type=int, help='Number of test episodes')
+    parser.add_argument('--name', required=True, type=str, help='Same as the training run name')
     return parser.parse_args()
 
 args = parse_args()
 
-def main():
+seeds = [100, 200, 300, 400, 500]  
+
+def main(seed):
     
     os.makedirs(args.name, exist_ok=True)
-    out_file_name = f"{args.name}/output_test.txt"
+    out_file_name = f"{args.name}/output_test_seed_{seed}.txt"
     out_file = open(out_file_name, "w")  
 
     env = gym.make('CustomHopper-source-v0')
     # env = gym.make('CustomHopper-target-v0')
+    env.seed(seed)
     
 
     wandb.init(
         project="Confronti_progetti",
-        name=f"{args.name}_test",
+        name=f"{args.name}_test_seed_{seed}",
         entity="andrea-gaudino02-politecnico-di-torino",
         config={
             "env": "CustomHopper-source-v0",
@@ -56,7 +59,7 @@ def main():
     observation_space_dim = env.observation_space.shape[-1]
     action_space_dim = env.action_space.shape[-1]
     
-    model_path = f"{args.name}/model.mdl"
+    model_path = f"{args.name}/model_seed_{seed}.mdl"
 
     policy = Policy(observation_space_dim, action_space_dim)
     policy.load_state_dict(torch.load(model_path), strict=True)
@@ -92,4 +95,5 @@ def main():
     wandb.finish()
 
 if __name__ == '__main__':
-    main()
+    for seed in seeds:
+        main(seed)
