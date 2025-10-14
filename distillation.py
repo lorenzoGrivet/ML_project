@@ -39,7 +39,7 @@ def moving_avg(rewards, window=10):
         avg_deque.append(r)
         avg = sum(avg_deque) / len(avg_deque)
         running_avg.append(avg)
-        normed_rewards.append(r / (avg + 1e-8))  # normalizza rispetto alla media mobile
+        normed_rewards.append(r / (avg + 1e-8))  # normalize wrt the moving average
     mean_raw = np.mean(rewards)
     mean_norm = np.mean(normed_rewards)
     std_raw = np.std(rewards)
