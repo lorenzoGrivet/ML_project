@@ -33,16 +33,6 @@ As the latest version of `mujoco-py` is not compatible for Windows explicitly, y
 - (not recommended) Stick to the Google Colab template (see below), which runs on the browser regardless of the operating system. This option, however, will not allow you to render the environment in an interactive window for debugging purposes.
 
 
-### 3. Remotely on Google Colab
-
-Alternatively, you may also complete the project on [Google Colab](https://colab.research.google.com/):
-
-- Download the files contained in the `colab_template` folder in this repo.
-- Load the `.ipynb` files on [https://colab.research.google.com/](colab) and follow the instructions on each script to run the experiments.
-
-NOTE 1: rendering is currently **not** officially supported on Colab, making it hard to see the simulator in action. We recommend that each group manages to play around with the visual interface of the simulator at least once (e.g. using a Linux system), to best understand what is going on with the underlying Hopper environment.
-
-NOTE 2: you need to stay connected to the Google Colab interface at all times for your python scripts to keep training.
 
 
 
