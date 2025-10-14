@@ -31,11 +31,11 @@ def main(seed):
         out_file_path = os.path.join(args.name, f"{args.name}_{args.model}_{args.size}_output_test_seed{seed}.txt")
     out_file = open(out_file_path, "w")
 
-    # Inizializza ambiente
+    # Enviroment initialization
     env = gym.make(f'CustomHopper-target-v0')
     env.seed(seed)
     
-    # Inizializza W&B
+    # W&B initialization
     nameRun = 'ppd'
     if args.model == 'teacher':
         nameRun = f"{args.name}_{args.model}_test_seed{seed}"
@@ -44,7 +44,7 @@ def main(seed):
 
 
     wandb.init(
-        project="Confronti_progetti",
+        project="PPD",
         name=nameRun,
         entity="andrea-gaudino02-politecnico-di-torino",
         config={
@@ -54,7 +54,7 @@ def main(seed):
         }
     )
     
-    # Carica modello SB3
+    # Uploading SB3 model
     model_path = ''
     if args.model == 'teacher':
         model_path = f"models/{args.name}_teacher_model_seed{seed}.ckpt"

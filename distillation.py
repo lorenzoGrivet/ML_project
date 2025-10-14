@@ -50,7 +50,7 @@ if __name__ == "__main__":
     for seed in seeds:
     
         wandb.init(
-            project="Confronti_progetti",
+            project="PPD",
             name=f"{args.name}_distill_{args.size}_seed{seed}",
             entity="andrea-gaudino02-politecnico-di-torino",
             config={
@@ -108,10 +108,10 @@ if __name__ == "__main__":
         student_model.set_teacher(teacher_model, distill_lambda=5)
         # Linearly annealing distillation-loss weight
 
-        # Callback di valutazione per lo student
         eval_env = DummyVecEnv([lambda: gym.make('CustomHopper-source-v0') for _ in range(1)])
         eval_env = VecNormalize(eval_env, norm_obs=False, norm_reward=False)
-
+        
+        # Callback for evaluating the student
         eval_callback = EvalCallback(
             eval_env,
             best_model_save_path=None,
@@ -122,6 +122,7 @@ if __name__ == "__main__":
             render=False,
             verbose=1
         )
+
         #wandb callback
         wandb_callback = WandbCallback(
             model_save_path=f"{args.name}/models/seed_{seed}/",

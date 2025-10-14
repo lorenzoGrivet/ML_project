@@ -26,7 +26,7 @@ seeds = [100, 200, 300, 400, 500]
 if __name__ == "__main__":
     for seed in seeds:
         wandb.init(
-            project="Confronti_progetti",
+            project="PPD",
             name=f"{args.name}_train_teacher_seed{seed}",
             entity="andrea-gaudino02-politecnico-di-torino",
             config={
@@ -63,14 +63,13 @@ if __name__ == "__main__":
                             ent_coef=0.01, 
                             tensorboard_log=f"tensorboard/seed_{seed}/",
                             seed=seed)
-        print("PPO inizializzato")
         
-        #enviroment per la valutazione
+        # Enviroment for evaluation
         eval_env = DummyVecEnv([lambda: gym.make('CustomHopper-source-v0') for _ in range(1)])
         eval_env.seed(seed)
         eval_env = VecNormalize(eval_env, norm_obs=False, norm_reward = False)
 
-        #call per stampare la reward della valutazione
+        
         eval_callback = EvalCallback(
             eval_env,
             best_model_save_path=None,
@@ -82,7 +81,7 @@ if __name__ == "__main__":
             verbose=1
         )
 
-        #wandb callback
+        # wandb callback
         wandb_callback = WandbCallback(
             model_save_path=f"{args.name}/models/seed_{seed}/",
             verbose=2 )
@@ -91,7 +90,6 @@ if __name__ == "__main__":
                             tb_log_name=f'{args.name}_teacher_seed{seed}',
                             callback=[wandb_callback, eval_callback])
         
-        print("PPO learn finito")
 
         teacher_model.save(f'models/{args.name}_teacher_model_seed{seed}.ckpt')
 
