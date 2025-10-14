@@ -47,6 +47,36 @@ Check your installation by launching `python test_random_policy.py`.
 
 ---
 
+## Running the Code and Weights & Biases (W&B) Tracking
+
+This project uses **Weights & Biases (W&B)** for experiment tracking, visualization, and monitoring. If you don't want to use W&B just comment every line where wandb is called.
+
+### W&B Configuration
+
+1.  Ensure you have a W&B account and are logged in locally.
+
+2.  You must specify your W&B entity (username or team name) in the `wandb.init` call, under the attribute entity
+
+### 1. Training the Teacher Policy (PPO)
+
+Use the `train_teacher.py` script to train the initial, robust teacher policy. The `--name` argument is mandatory for run identification. **Pay attenyion at the name you give to the run as it must be the same for every training and test phase in order to make the code upload the correct files.**
+
+*Example: `python train_teacher.py --name ppo_teacher_run`*
+
+### 2. Distilling the Student Policy (PPD)
+
+Use the `distillation.py` script to train the student policy via PPD. You must specify `--name` (matching the teacher's run name) and the student network's `--size`.
+
+*Example: `python distillation.py --name ppo_teacher_run --size same`*
+
+### 3. Testing and Evaluation
+
+Use the `test.py` script to evaluate the performance of the trained models (teacher or student) on the target environment. Specify which model you want to test by using the `--model` argument which can be either "distill" for the student and "teacher" for the teacher. If you want to watch the Hopper running you must include the `--render` argument
+
+*Example: `python test.py --name ppo_teacher_run --model teacher --render`*
+
+---
+
 ## Troubleshooting
 - General installation guide and troubleshooting: [Here](https://docs.google.com/document/d/1j5_FzsOpGflBYgNwW9ez5dh3BGcLUj4a/edit?usp=sharing&ouid=118210130204683507526&rtpof=true&sd=true)
 - If having trouble while installing mujoco-py, see [#627](https://github.com/openai/mujoco-py/issues/627) to install all dependencies through conda.
