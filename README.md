@@ -4,6 +4,7 @@
 ### Teaching assistants: Andrea Protopapa and Davide Buoso
 
 The official assignment document is available here: [Google Doc](https://docs.google.com/document/d/16Fy0gUj-HKxweQaJf97b_lTeqM_9axJa4_SdqpP_FaE/edit?usp=sharing).
+All the steps required by the official assignment are present in the other branches.
 
 ---
 
