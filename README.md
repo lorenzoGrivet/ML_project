@@ -1,8 +1,11 @@
-# Project on Reinforcement Learning (Course project MLDL 2025 - POLITO)
+# Project on Reinforcement Learning
+### Course: Machine Learning and Deep Learning (MLDL)
+### Institution: Politecnico di Torino
 ### Teaching assistants: Andrea Protopapa and Davide Buoso
 
 Starting code for "Project 4: Reinforcement Learning" course project of MLDL 2025 at Polytechnic of Turin. Official assignment at [Google Doc](https://docs.google.com/document/d/16Fy0gUj-HKxweQaJf97b_lTeqM_9axJa4_SdqpP_FaE/edit?usp=sharing).
 
+---
 
 ## Getting started
 
@@ -11,10 +14,11 @@ Before starting to implement your own code, make sure to:
 2. read the documentation of the main packages you will be using ([mujoco-py](https://github.com/openai/mujoco-py), [Gym](https://github.com/openai/gym), [stable-baselines3](https://stable-baselines3.readthedocs.io/en/master/index.html))
 3. play around with the code in the template to familiarize with all the tools. Especially with the `test_random_policy.py` script.
 
+---
 
 ### 1. Local on Linux (recommended)
 
-if you have a Linux system, you can work on the course project directly on your local machine. By doing so, you will also be able to render the Mujoco Hopper environment and visualize what is happening. This code has been tested on Linux with python 3.7.
+If you have a Linux system, you can work on the course project directly on your local machine. By doing so, you will also be able to render the Mujoco Hopper environment and visualize what is happening. This code has been tested on Linux with python 3.7.
 
 **Installation**
 - (recommended) create a new conda environment, e.g. `conda create --name mldl pip=22 python=3.8 setuptools=65.5.0 wheel=0.38`
@@ -25,6 +29,7 @@ if you have a Linux system, you can work on the course project directly on your 
 
 Check your installation by launching `python test_random_policy.py`.
 
+---
 
 ### 2. Local on Windows
 As the latest version of `mujoco-py` is not compatible for Windows explicitly, you may:
@@ -32,6 +37,7 @@ As the latest version of `mujoco-py` is not compatible for Windows explicitly, y
 - (not recommended) Try downloading a [previous version](https://github.com/openai/mujoco-py/blob/9ea9bb000d6b8551b99f9aa440862e0c7f7b4191/) of `mujoco-py`.
 - (not recommended) Stick to the Google Colab template (see below), which runs on the browser regardless of the operating system. This option, however, will not allow you to render the environment in an interactive window for debugging purposes.
 
+---
 
 ### 3. Remotely on Google Colab
 
@@ -44,7 +50,7 @@ NOTE 1: rendering is currently **not** officially supported on Colab, making it 
 
 NOTE 2: you need to stay connected to the Google Colab interface at all times for your python scripts to keep training.
 
-
+---
 
 ## Troubleshooting
 - General installation guide and troubleshooting: [Here](https://docs.google.com/document/d/1j5_FzsOpGflBYgNwW9ez5dh3BGcLUj4a/edit?usp=sharing&ouid=118210130204683507526&rtpof=true&sd=true)
