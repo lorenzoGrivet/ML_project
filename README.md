@@ -4,29 +4,24 @@
 ### Teaching assistants: Andrea Protopapa and Davide Buoso
 
 The official assignment document is available here: [Google Doc](https://docs.google.com/document/d/16Fy0gUj-HKxweQaJf97b_lTeqM_9axJa4_SdqpP_FaE/edit?usp=sharing).
+All the steps required by the official assignment are present in the other branches.
 
 ---
 
 ## Project Overview
 
-[cite_start]This project focuses on **Proximal Policy Distillation (PPD)**, a Reinforcement Learning method that enhances the stability of **Proximal Policy Optimization (PPO)** with a distillation loss[cite: 11].
+This project focuses on **Proximal Policy Distillation (PPD)**, a Reinforcement Learning method that enhances the stability of **Proximal Policy Optimization (PPO)** with a distillation loss.
 
-* [cite_start]**Objective:** To transfer knowledge from a robust, pre-trained teacher policy to a student policy to accelerate learning and improve robustness[cite: 12, 96].
-* [cite_start]**Environment:** The experiments were conducted on a custom version of the **Gym Hopper** environment, which utilizes **Uniform Domain Randomization (UDR)** to improve the generalization capabilities of the teacher policy[cite: 22].
-* [cite_start]**Methodology:** Policy distillation is performed onto three student network sizes (smaller, identical, and larger than the teacher's) to compare PPD's performance against standard PPO without distillation[cite: 12, 13].
+* **Objective:** To transfer knowledge from a robust, pre-trained teacher policy to a student policy to accelerate learning and improve robustness.
+* **Environment:** The experiments were conducted on a custom version of the **Gym Hopper** environment, which utilizes **Uniform Domain Randomization (UDR)** to improve the generalization capabilities of the teacher policy.
+* **Methodology:** Policy distillation is performed onto three student network sizes (smaller, identical, and larger than the teacher's) to compare PPD's performance against standard PPO without distillation.
 
 For a detailed analysis, results, and discussion, please refer to the full project report: [report_ML_PPD.pdf](report_ML_PPD.pdf).
 
----
 
-## Getting started
-
-Before starting to implement your own code, make sure to:
-1. read and study the material provided (see Section 1 in the assignment)
-2. read the documentation of the main packages you will be using ([mujoco-py](https://github.com/openai/mujoco-py), [Gym](https://github.com/openai/gym), [stable-baselines3](https://stable-baselines3.readthedocs.io/en/master/index.html))
-3. play around with the code in the template to familiarize with all the tools. Especially with the `test_random_policy.py` script.
 
 ---
+In order to be able to run the code on your computer follow these instructions.
 
 ### 1. Local on Linux (recommended)
 
@@ -39,14 +34,16 @@ If you have a Linux system, you can work on the course project directly on your 
 	- follow instructions here: https://github.com/openai/mujoco-py
 	- see Troubleshooting section below for solving common installation issues.
 
-Check your installation by launching `python test_random_policy.py`.
 
----
+
 
 ### 2. Local on Windows
 As the latest version of `mujoco-py` is not compatible for Windows explicitly, you may:
 - Try installing WSL2 (requires fewer resources) or a full Virtual Machine to run Linux on Windows. Then you can follow the instructions above for Linux.
 - (not recommended) Try downloading a [previous version](https://github.com/openai/mujoco-py/blob/9ea9bb000d6b8551b99f9aa440862e0c7f7b4191/) of `mujoco-py`.
+
+
+Check your installation by launching `python test_random_policy.py`.
 
 ---
 
