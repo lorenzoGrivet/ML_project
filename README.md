@@ -1,9 +1,21 @@
-# Project on Reinforcement Learning
-### Course: Machine Learning and Deep Learning (MLDL)
-### Institution: Politecnico di Torino
+# Project on Reinforcement Learning: Proximal Policy Distillation (PPD)
+### Course Project for **Machine Learning and Deep Learning (MLDL)**
+### Institution: **Politecnico di Torino**
 ### Teaching assistants: Andrea Protopapa and Davide Buoso
 
-Starting code for "Project 4: Reinforcement Learning" course project of MLDL 2025 at Polytechnic of Turin. Official assignment at [Google Doc](https://docs.google.com/document/d/16Fy0gUj-HKxweQaJf97b_lTeqM_9axJa4_SdqpP_FaE/edit?usp=sharing).
+The official assignment document is available here: [Google Doc](https://docs.google.com/document/d/16Fy0gUj-HKxweQaJf97b_lTeqM_9axJa4_SdqpP_FaE/edit?usp=sharing).
+
+---
+
+## Project Overview
+
+[cite_start]This project focuses on **Proximal Policy Distillation (PPD)**, a Reinforcement Learning method that enhances the stability of **Proximal Policy Optimization (PPO)** with a distillation loss[cite: 11].
+
+* [cite_start]**Objective:** To transfer knowledge from a robust, pre-trained teacher policy to a student policy to accelerate learning and improve robustness[cite: 12, 96].
+* [cite_start]**Environment:** The experiments were conducted on a custom version of the **Gym Hopper** environment, which utilizes **Uniform Domain Randomization (UDR)** to improve the generalization capabilities of the teacher policy[cite: 22].
+* [cite_start]**Methodology:** Policy distillation is performed onto three student network sizes (smaller, identical, and larger than the teacher's) to compare PPD's performance against standard PPO without distillation[cite: 12, 13].
+
+For a detailed analysis, results, and discussion, please refer to the full project report: [report_ML_PPD.pdf](report_ML_PPD.pdf).
 
 ---
 
@@ -35,20 +47,6 @@ Check your installation by launching `python test_random_policy.py`.
 As the latest version of `mujoco-py` is not compatible for Windows explicitly, you may:
 - Try installing WSL2 (requires fewer resources) or a full Virtual Machine to run Linux on Windows. Then you can follow the instructions above for Linux.
 - (not recommended) Try downloading a [previous version](https://github.com/openai/mujoco-py/blob/9ea9bb000d6b8551b99f9aa440862e0c7f7b4191/) of `mujoco-py`.
-- (not recommended) Stick to the Google Colab template (see below), which runs on the browser regardless of the operating system. This option, however, will not allow you to render the environment in an interactive window for debugging purposes.
-
----
-
-### 3. Remotely on Google Colab
-
-Alternatively, you may also complete the project on [Google Colab](https://colab.research.google.com/):
-
-- Download the files contained in the `colab_template` folder in this repo.
-- Load the `.ipynb` files on [https://colab.research.google.com/](colab) and follow the instructions on each script to run the experiments.
-
-NOTE 1: rendering is currently **not** officially supported on Colab, making it hard to see the simulator in action. We recommend that each group manages to play around with the visual interface of the simulator at least once (e.g. using a Linux system), to best understand what is going on with the underlying Hopper environment.
-
-NOTE 2: you need to stay connected to the Google Colab interface at all times for your python scripts to keep training.
 
 ---
 
