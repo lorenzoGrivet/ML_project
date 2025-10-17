@@ -1,4 +1,4 @@
-********ML_project — Proximal Policy Distillation (PPD)*********
+********ML_project — Proximal Policy Distillation (PPD)********
 
 A Reinforcement Learning project introducing Proximal Policy Distillation, which combines PPO stability with a KL-based distillation loss from a robust teacher policy trained on randomized environments.
 
